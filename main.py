@@ -1,4 +1,5 @@
 import os
+import tempfile
 
 import discord
 from discord import ApplicationContext, Option
@@ -9,6 +10,8 @@ from beep.config import CreateConfig
 from beep.notes import key_notes
 
 bot = discord.Bot(debug_guilds=[902261535194349578, 787651775825313833])
+
+normalized_instruments = [instrument.lower() for instrument in INSTRUMENT_MAP]
 
 
 @bot.event
@@ -32,13 +35,13 @@ async def beep(ctx: ApplicationContext,
         await ctx.respond('You need to be connected to a voice channel to use BeepBot!', ephemeral=True, delete_after=5)
         return
 
-    if instrument not in INSTRUMENT_MAP:
+    if instrument.lower() not in normalized_instruments:
         await ctx.respond(f'I don\'t know about the instrument {instrument}, perhaps try /instruments', ephemeral=True, delete_after=5)
         return
 
     instance = get_beep_instance(ctx.guild.id)
 
-    result = [key_notes[note] for note in str(notes)]
+    result = [key_notes[note.lower()] for note in str(notes) if note.lower() in key_notes]
 
     config = CreateConfig(
         notes=result,
@@ -46,11 +49,16 @@ async def beep(ctx: ApplicationContext,
         note_length=note_length,
     )
 
-    instance.create(config, 'test.wav')
+    with tempfile.NamedTemporaryFile(suffix='.wav') as temp_wav:
+        instance.create(config, temp_wav.name)
 
-    vc = await voice.channel.connect()
-    vc.play(discord.FFmpegPCMAudio('test.wav'))
-    await ctx.respond(f'Playing: {", ".join(result)}', ephemeral=True)
+        if any(bot.user.id == member.id for member in voice.channel.members):
+            vc = next(client for client in bot.voice_clients if client.client.user.id == bot.user.id)
+        else:
+            vc = await voice.channel.connect()
+
+        vc.play(discord.FFmpegPCMAudio(temp_wav.name))
+        await ctx.respond(f'Playing: {", ".join(result)}', ephemeral=True)
 
 
 bot.run(os.environ.get('DISCORD_TOKEN'))
