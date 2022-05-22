@@ -2,7 +2,7 @@ FROM python:3.8-alpine
 
 WORKDIR /app
 
-RUN apk add --update \
+RUN apk add --no-cache --virtual --update \
     fluidsynth \
     ffmpeg \
     build-base \
