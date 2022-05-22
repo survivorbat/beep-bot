@@ -6,7 +6,8 @@ RUN apk add --update \
     fluidsynth \
     ffmpeg \
     build-base \
-    libffi-dev
+    libffi-dev \
+    libsodium
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
