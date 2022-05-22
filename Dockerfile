@@ -9,7 +9,9 @@ RUN apk add --update \
     libffi-dev \
     libsodium \
     make \
-    cmake
+    cmake \
+    .pynacl_deps \
+    python3-dev
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
