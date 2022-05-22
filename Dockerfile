@@ -4,7 +4,8 @@ WORKDIR /app
 
 RUN apk add --update \
     fluidsynth \
-    ffmpeg
+    ffmpeg \
+    build-tools
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
