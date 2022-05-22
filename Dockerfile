@@ -2,7 +2,7 @@ FROM python:3.8-alpine
 
 WORKDIR /app
 
-RUN apk --update \
+RUN apk add --update \
     fluidsynth \
     ffmpeg
 
