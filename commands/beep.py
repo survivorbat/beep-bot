@@ -51,5 +51,10 @@ async def beep(ctx: ApplicationContext,
         else:
             vc = await voice.channel.connect()
 
-        vc.play(discord.FFmpegPCMAudio(temp_wav.name))
+        try:
+            vc.play(discord.FFmpegPCMAudio(temp_wav.name))
+        except:
+            await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True, delete_after=5)
+            return
+
         await ctx.send(f'{ctx.author.mention} played: {notes}')
