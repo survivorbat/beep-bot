@@ -1,3 +1,4 @@
+import logging
 import tempfile
 
 import discord
@@ -32,16 +33,19 @@ async def beep(ctx: ApplicationContext,
                           delete_after=5)
         return
 
+    logging.info(f'Creating music for guild {ctx.guild.id}: {notes}')
+
     try:
         config = BeepConfig(
             notes_input=notes,
             instrument=instrument,
         )
     except BeepParseError as e:
+        logging.exception(e)
         await ctx.respond(f'Something is wrong with your input: {e.message}', ephemeral=True, delete_after=5)
         return
     except Exception as e:
-        print(e)
+        logging.exception(e)
         await ctx.respond('Something was wrong with your input', ephemeral=True, delete_after=5)
         return
 
@@ -57,7 +61,7 @@ async def beep(ctx: ApplicationContext,
         try:
             vc.play(discord.FFmpegPCMAudio(temp_wav.name))
         except Exception as e:
-            print(e)
+            logging.exception(e)
             await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True, delete_after=5)
             return
 
