@@ -34,6 +34,10 @@ def _parse_input_notes(characters: str) -> List[Beep]:
     in_chord = False
 
     for character in characters:
+        if character == '-':
+            note_index += 1
+            continue
+
         if character == '[' and in_sequence:
             raise BeepParseError('Unexpected [ found, you already have another bracket open')
 
@@ -64,6 +68,9 @@ def _parse_input_notes(characters: str) -> List[Beep]:
                 if entry == '_':
                     _ensure_not_first(result)
                     result[-1].end += increment
+                    continue
+
+                if entry == '-':
                     continue
 
                 note = Beep(

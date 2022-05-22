@@ -8,7 +8,8 @@ help_text = '**Beep Bot Beeps!**\n' \
             'To spice things up:\n' \
             '- Wrap letters in [square brackets] to create a sequence\n' \
             '- Create chords with (parentheses)\n' \
-            '- Add underscore(s) (_) after a letter to make them last longer'
+            '- Add underscore(s) (_) after a letter to make them last longer\n' \
+            '- Add dashes (-) to add silence'
 
 
 def setup(_: discord.Bot) -> None:
