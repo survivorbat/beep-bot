@@ -1,9 +1,8 @@
-FROM python:3.8-slim-buster
+FROM python:3.8-alpine
 
 WORKDIR /app
 
-RUN apt update -y \
- && apt install \
+RUN apk --update \
     fluidsynth \
     ffmpeg
 
