@@ -2,7 +2,7 @@ FROM python:3.8-alpine
 
 WORKDIR /app
 
-RUN apk add --no-cache --virtual --update \
+RUN apk add --no-cache \
     fluidsynth \
     ffmpeg \
     build-base \
@@ -10,7 +10,6 @@ RUN apk add --no-cache --virtual --update \
     libsodium \
     make \
     cmake \
-    .pynacl_deps \
     python3-dev
 
 COPY requirements.txt requirements.txt
