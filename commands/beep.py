@@ -15,6 +15,8 @@ def setup(_: discord.Bot) -> None:
     pass
 
 
+# TODO: Add logging instead of prints
+
 @bot.slash_command(name='beep', description='Generate some beeps')
 async def beep(ctx: ApplicationContext,
                notes: Option(str, 'From Q to /', required=True),
@@ -38,7 +40,8 @@ async def beep(ctx: ApplicationContext,
     except BeepParseError as e:
         await ctx.respond(f'Something is wrong with your input: {e.message}', ephemeral=True, delete_after=5)
         return
-    except:
+    except Exception as e:
+        print(e)
         await ctx.respond('Something was wrong with your input', ephemeral=True, delete_after=5)
         return
 
@@ -53,7 +56,8 @@ async def beep(ctx: ApplicationContext,
 
         try:
             vc.play(discord.FFmpegPCMAudio(temp_wav.name))
-        except:
+        except Exception as e:
+            print(e)
             await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True, delete_after=5)
             return
 
