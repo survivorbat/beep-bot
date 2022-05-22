@@ -20,7 +20,7 @@ def setup(_: discord.Bot) -> None:
 
 @bot.slash_command(name='beep', description='Generate some beeps')
 async def beep(ctx: ApplicationContext,
-               notes: Option(str, 'From Q to /', required=True),
+               notes: Option(str, 'From Q to /, use /help for all options', required=True),
                instrument: Option(str, 'Instrument to use', default='Acoustic Grand Piano')) -> None:
     voice = ctx.author.voice
 

@@ -33,7 +33,7 @@ def _parse_input_notes(characters: str) -> List[Beep]:
     chord = []
     in_chord = False
 
-    for character in enumerate(characters):
+    for character in characters:
         if character == '[' and in_sequence:
             raise BeepParseError('Unexpected [ found, you already have another bracket open')
 
