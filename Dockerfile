@@ -2,7 +2,8 @@ FROM python:3.8-slim-buster
 
 WORKDIR /app
 
-RUN apt install \
+RUN apt update \
+ && apt install \
     fluidsynth \
     ffmpeg
 
