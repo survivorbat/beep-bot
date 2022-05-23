@@ -4,7 +4,7 @@ from pretty_midi import INSTRUMENT_MAP
 
 from main import bot
 
-instrument_return = 'Available instruments:\n' + ', '.join(INSTRUMENT_MAP)
+instrument_return = '**Available instruments**:\n' + ', '.join(INSTRUMENT_MAP)
 
 
 def setup(_: discord.Bot) -> None:

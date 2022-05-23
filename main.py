@@ -10,6 +10,7 @@ bot = discord.Bot(debug_guilds=[902261535194349578, 787651775825313833])
 bot.load_extension(name='commands.beep')
 bot.load_extension(name='commands.instruments')
 bot.load_extension(name='commands.help')
+bot.load_extension(name='commands.notes')
 
 
 @bot.event

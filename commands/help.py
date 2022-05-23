@@ -7,9 +7,9 @@ help_text = '**Beep Bot Beeps!**\n' \
             'I was made to generate music from textual input. Use /beep and input some text while in a voice chat.\n\n' \
             'To spice things up:\n' \
             '- Wrap letters in [square brackets] to create a sequence\n' \
-            '- Create chords with (parentheses)\n' \
-            '- Add underscore(s) (_) after a letter to make them last longer\n' \
-            '- Add dashes (-) to add silence'
+            '- Wrap letters in (parentheses) to play them all at once\n' \
+            '- Add underscore(s) (_) after anything to make it last longer\n' \
+            '- Use dashes (-) to add silence'
 
 
 def setup(_: discord.Bot) -> None:

@@ -16,12 +16,10 @@ def setup(_: discord.Bot) -> None:
     pass
 
 
-# TODO: Add logging instead of prints
-
-@bot.slash_command(name='beep', description='Generate some beeps')
+@bot.slash_command(name='beep', description='Generate music!')
 async def beep(ctx: ApplicationContext,
-               notes: Option(str, 'From Q to /, use /help for all options', required=True),
-               instrument: Option(str, 'Instrument to use', default='Acoustic Grand Piano')) -> None:
+               notes: Option(str, 'From /notes, use /help for all options/effects', required=True),
+               instrument: Option(str, 'Instrument from /instruments', default='Acoustic Grand Piano')) -> None:
     voice = ctx.author.voice
 
     if not voice:
@@ -41,7 +39,6 @@ async def beep(ctx: ApplicationContext,
             instrument=instrument,
         )
     except BeepParseError as e:
-        logging.exception(e)
         await ctx.respond(f'Something is wrong with your input: {e.message}', ephemeral=True, delete_after=5)
         return
     except Exception as e:
@@ -59,10 +56,10 @@ async def beep(ctx: ApplicationContext,
             vc = await voice.channel.connect()
 
         try:
-            vc.play(discord.FFmpegPCMAudio(temp_wav.name), after=await vc.disconnect())
+            vc.play(discord.FFmpegPCMAudio(temp_wav.name))
         except Exception as e:
             logging.exception(e)
             await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True, delete_after=5)
             return
 
-        await ctx.send(f'{ctx.author.mention} played: {notes}')
+        await ctx.respond(f'{ctx.author.mention} on _{instrument}_ played: {notes}')
