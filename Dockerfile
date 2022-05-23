@@ -1,16 +1,14 @@
-FROM python:3.10-alpine
+FROM python:3.10
 
 WORKDIR /app
 
-RUN apk add --update \
+RUN apt-get update -y \
+ && apt-get install -y \
     fluidsynth \
     ffmpeg \
-    build-base \
     libffi-dev \
-    libsodium \
-    make \
-    cmake \
-    python3-dev
+    libsodium-dev \
+    lsof
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
