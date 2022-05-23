@@ -33,7 +33,7 @@ async def beep(ctx: ApplicationContext,
                           delete_after=5)
         return
 
-    logging.info(f'Creating music for guild {ctx.guild.id}: {notes}')
+    logging.info(f'Creating music for guild {ctx.guild.name}: {notes}')
 
     try:
         config = BeepConfig(
@@ -59,7 +59,7 @@ async def beep(ctx: ApplicationContext,
             vc = await voice.channel.connect()
 
         try:
-            vc.play(discord.FFmpegPCMAudio(temp_wav.name))
+            vc.play(discord.FFmpegPCMAudio(temp_wav.name), after=await vc.disconnect())
         except Exception as e:
             logging.exception(e)
             await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True, delete_after=5)
