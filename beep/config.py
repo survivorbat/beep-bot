@@ -118,6 +118,15 @@ def _ensure_not_first(notes: List[_AbstractBeep]) -> None:
 
 # TODO: Refactor this if possible
 
+def _key_to_note(key: str) -> str:
+    low_key = key.lower()
+
+    if low_key not in key_notes:
+        raise BeepParseError(f"Key {key} has no associated note")
+
+    return key_notes[low_key]
+
+
 def _parse_input_notes(characters: str) -> List[Note]:
     beeps: List[_AbstractBeep] = []
 
