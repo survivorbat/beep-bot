@@ -1,4 +1,4 @@
-FROM python:3.10
+FROM gorialis/discord.py:3.10-master
 
 WORKDIR /app
 
