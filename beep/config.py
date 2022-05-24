@@ -190,6 +190,12 @@ def _parse_input_notes(characters: str) -> List[Note]:
         single_beep.add_note(key_notes[character.lower()])
         beeps.append(single_beep)
 
+    if sequence is not None:
+        raise BeepParseError("You forgot to finish a pair of brackets")
+
+    if chord is not None:
+        raise BeepParseError("You forgot to finish a pair of parenthesis")
+
     result = []
     note_index = 0
     for beep in beeps:
