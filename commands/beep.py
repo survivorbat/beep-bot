@@ -1,8 +1,11 @@
+import asyncio
 import logging
 import tempfile
+import time
+from typing import Optional
 
 import discord
-from discord import ApplicationContext, Option
+from discord import ApplicationContext, Option, VoiceProtocol
 from discord.utils import get
 from pretty_midi import INSTRUMENT_MAP
 
@@ -21,9 +24,9 @@ def setup(_: discord.Bot) -> None:
 async def beep(ctx: ApplicationContext,
                notes: Option(str, 'From /notes, use /help for all options/effects', required=True),
                instrument: Option(str, 'Instrument from /instruments', default='Acoustic Grand Piano')) -> None:
-    voice = ctx.author.voice
+    author_voice = ctx.author.voice
 
-    if not voice:
+    if not author_voice:
         await ctx.respond('You need to be connected to a voice channel to use BeepBot', ephemeral=True, delete_after=5)
         return
 
@@ -53,11 +56,15 @@ async def beep(ctx: ApplicationContext,
         # Check if the bot is already in the channel, if not, join it
         vc = get(bot.voice_clients, guild=ctx.guild)
 
+        if vc is not None and vc.channel != author_voice.channel:
+            await vc.disconnect(force=False)
+            vc = None
+
         if vc is None:
-            vc = await voice.channel.connect()
+            vc = await author_voice.channel.connect()
 
         try:
-            vc.play(discord.FFmpegPCMAudio(temp_wav.name), after=lambda: (await vc.disconnect() for _ in '_').__anext__())
+            vc.play(discord.FFmpegPCMAudio(temp_wav.name))
         except Exception as e:
             logging.exception(e)
             await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True, delete_after=5)
