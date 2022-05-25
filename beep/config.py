@@ -134,6 +134,9 @@ def _parse_input_notes(characters: str) -> List[Note]:
     chord: Optional[_BeepChord] = None
 
     for character in characters:
+        if character == ' ':
+            continue
+
         if character == '-':
             beeps.append(_SilentBeep())
             continue

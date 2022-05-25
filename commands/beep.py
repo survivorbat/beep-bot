@@ -43,11 +43,11 @@ async def beep(ctx: ApplicationContext,
             instrument=instrument,
         )
     except BeepParseError as e:
-        await ctx.respond(f'Something is wrong with your input: {e.message}', ephemeral=True, delete_after=5)
+        await ctx.respond(f'{notes}: {e.message}', ephemeral=True)
         return
     except Exception as e:
         logging.exception(e)
-        await ctx.respond('Something was wrong with your input', ephemeral=True, delete_after=5)
+        await ctx.respond(f'{notes}: Something was wrong with your input', ephemeral=True)
         return
 
     with tempfile.NamedTemporaryFile(suffix='.wav') as temp_wav:
