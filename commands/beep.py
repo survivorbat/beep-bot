@@ -57,13 +57,16 @@ async def beep(ctx: ApplicationContext,
         vc = ctx.guild.voice_client
 
         if vc is not None and vc.channel != author_voice.channel:
+            logging.info(f'User is in {author_voice.channel.name}, disconnecting from current channel}')
             await vc.disconnect(force=False)
             vc = None
 
         if vc is None:
+            logging.info(f'Not yet connected, connecting to: {author_voice.channel.name}')
             vc = await author_voice.channel.connect()
 
         try:
+            logging.info(f'Playing {temp_wav.name} in {author_voice.channel.name}')
             vc.play(discord.FFmpegPCMAudio(temp_wav.name))
         except Exception as e:
             logging.exception(e)
