@@ -7,7 +7,7 @@ RUN apt-get update -y \
     fluidsynth \
     ffmpeg \
     libffi-dev \
-    python3.10-dev \
+    python-dev \
     libsodium-dev \
     lsof
 
