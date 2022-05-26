@@ -1,16 +1,12 @@
-import asyncio
 import logging
 import tempfile
-import time
-from typing import Optional
 
 import discord
-from discord import ApplicationContext, Option, VoiceProtocol, ClientException
-from discord.utils import get
+from discord import ApplicationContext, Option
 from pretty_midi import INSTRUMENT_MAP
 
-from beep.generate import create_beeps
 from beep.config import BeepConfig, BeepParseError
+from beep.generate import create_beeps
 from main import bot
 
 normalized_instruments = [instrument.lower() for instrument in INSTRUMENT_MAP]
@@ -66,12 +62,6 @@ async def beep(ctx: ApplicationContext,
             vc = await author_voice.channel.connect()
 
         try:
-            logging.info(f'Playing {temp_wav.name} in {author_voice.channel.name}')
-            vc.play(discord.FFmpegPCMAudio(temp_wav.name))
-        except ClientException as e:
-            logging.info(f'Got error {e}, retrying to connect')
-            vc = await author_voice.channel.connect()
-
             logging.info(f'Playing {temp_wav.name} in {author_voice.channel.name}')
             vc.play(discord.FFmpegPCMAudio(temp_wav.name))
         except Exception as e:
