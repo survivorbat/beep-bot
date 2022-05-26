@@ -54,7 +54,7 @@ async def beep(ctx: ApplicationContext,
         create_beeps(config, temp_wav.name)
 
         # Check if the bot is already in the channel, if not, join it
-        vc = get(bot.voice_clients, guild=ctx.guild)
+        vc = ctx.guild.voice_client
 
         if vc is not None and vc.channel != author_voice.channel:
             await vc.disconnect(force=False)
