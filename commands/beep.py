@@ -60,6 +60,8 @@ async def beep(ctx: ApplicationContext,
         if vc is None:
             logging.info(f'Not yet connected, connecting to: {author_voice.channel.name}')
             vc = await author_voice.channel.connect()
+        else:
+            logging.info(f'Using existing voice connection to channel: {author_voice.channel.name}')
 
         try:
             logging.info(f'Playing {temp_wav.name} in {author_voice.channel.name}')
