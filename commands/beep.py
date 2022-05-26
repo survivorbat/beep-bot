@@ -57,7 +57,7 @@ async def beep(ctx: ApplicationContext,
         vc = ctx.guild.voice_client
 
         if vc is not None and vc.channel != author_voice.channel:
-            logging.info(f'User is in {author_voice.channel.name}, disconnecting from current channel}')
+            logging.info(f'User is in {author_voice.channel.name}, disconnecting from current channel')
             await vc.disconnect(force=False)
             vc = None
 
