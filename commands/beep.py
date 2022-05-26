@@ -5,7 +5,7 @@ import time
 from typing import Optional
 
 import discord
-from discord import ApplicationContext, Option, VoiceProtocol
+from discord import ApplicationContext, Option, VoiceProtocol, ClientException
 from discord.utils import get
 from pretty_midi import INSTRUMENT_MAP
 
@@ -27,7 +27,7 @@ async def beep(ctx: ApplicationContext,
     author_voice = ctx.author.voice
 
     if not author_voice:
-        await ctx.respond('You need to be connected to a voice channel to use BeepBot', ephemeral=True, delete_after=5)
+        await ctx.respond('You need to be connected to a voice channel to use BeepBot', ephemeral=True)
         return
 
     if instrument.lower() not in normalized_instruments:
@@ -68,9 +68,15 @@ async def beep(ctx: ApplicationContext,
         try:
             logging.info(f'Playing {temp_wav.name} in {author_voice.channel.name}')
             vc.play(discord.FFmpegPCMAudio(temp_wav.name))
+        except ClientException as e:
+            logging.info(f'Got error {e}, retrying to connect')
+            vc = await author_voice.channel.connect()
+
+            logging.info(f'Playing {temp_wav.name} in {author_voice.channel.name}')
+            vc.play(discord.FFmpegPCMAudio(temp_wav.name))
         except Exception as e:
             logging.exception(e)
-            await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True, delete_after=5)
+            await ctx.respond('Something went wrong, please try again in a bit', ephemeral=True)
             return
 
         await ctx.respond(f'{ctx.author.mention} on _{instrument}_ played: {notes}')
