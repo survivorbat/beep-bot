@@ -1,8 +1,7 @@
 import logging
 import os
-import discord
 
-from health.health import start_health
+import discord
 
 logging.basicConfig(level=logging.INFO)
 
@@ -18,9 +17,6 @@ bot.load_extension(name='commands.notes')
 async def on_ready():
     logging.info(f'Logged in as {bot.user} to {len(bot.guilds)} guilds!')
 
-
-# Empty health route
-start_health()
 
 bot.run(os.environ.get('DISCORD_TOKEN'))
 
