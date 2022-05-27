@@ -53,9 +53,9 @@ async def beep(ctx: ApplicationContext,
         vc = ctx.guild.voice_client
 
         if vc is not None and vc.channel != author_voice.channel:
-            logging.info(f'User is in {author_voice.channel.name}, disconnecting from current channel')
-            await vc.disconnect(force=False)
-            vc = None
+            # TODO: Figure out how to properly switch
+            await ctx.respond(f'I\'m already connected to another voice channel, switching is scary :(')
+            return
 
         if vc is None:
             logging.info(f'Not yet connected, connecting to: {author_voice.channel.name}')
